@@ -2,6 +2,10 @@ package waterFlow;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
+
+import javax.print.DocFlavor.STRING;
 
 public class BFS {
 
@@ -31,7 +35,57 @@ public class BFS {
 		adjLists_dict.get("E").add(new edge("H", 2, "1-2"));
 		adjLists_dict.get("H").add(new edge("D", 5, "5-6,2-3"));
 		adjLists_dict.get("I").add(new edge("C", 6, "10-14"));
+		
+		String start = "A";
+		int startTime = 3;
+		ArrayList<String> goals = new ArrayList<String>();
+		goals.add("B");
+		goals.add("D");
+		goals.add("C");
+		
+		
+		breadthFirstSearch(start, startTime, adjLists_dict, goals);
 
 
+	}
+	
+	static String breadthFirstSearch(String start, int startTime, HashMap graph, ArrayList<String> goals){
+		
+		ArrayList<String> explored = new ArrayList<String>();
+		//System.out.println("starttime: "+startTime);
+		//System.out.println(graph);
+		Queue<String> frontier=new LinkedList<String>();
+		
+		frontier.add(start);
+		String currentNode = start;
+		
+		if (goals.contains(currentNode)){
+			return "Success with path";
+		}
+		if (frontier.isEmpty()){
+			return "Failure";
+		}
+		else{
+			currentNode = frontier.poll();
+			explored.add(currentNode);
+			return "Working on this";
+		}
+		
+		
+		/*System.out.println(goals.contains("A"));
+		System.out.println(goals.contains("B"));
+        myQ.add(1);
+        myQ.add(6);
+        myQ.add(3);
+        System.out.println(myQ); //1 6 3
+        int first=myQ.poll();// retrieve and remove the first element
+        System.out.println(first);//1
+        System.out.println(myQ);//6 3
+        */
+		
+		
+		
+		
+		
 	}
 }
