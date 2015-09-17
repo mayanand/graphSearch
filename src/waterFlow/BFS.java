@@ -68,6 +68,14 @@ public class BFS {
 		else{
 			currentNode = frontier.poll();
 			explored.add(currentNode);
+			//do the goal test now
+			System.out.println("this is teh current node " +currentNode);
+			System.out.println(graph.get(currentNode).getClass().getName());
+			ArrayList<edge> currentAdjList = (ArrayList<edge>)graph.get(currentNode);
+			
+			for (edge adj : currentAdjList){
+				System.out.println(adj.getDest());
+			} 
 			return "Working on this";
 		}
 		
