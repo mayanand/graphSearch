@@ -1,11 +1,10 @@
 package waterFlow;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
-
-import javax.print.DocFlavor.STRING;
 
 public class BFS {
 
@@ -62,35 +61,57 @@ public class BFS {
 		if (goals.contains(currentNode)){
 			return "Success with path";
 		}
-		if (frontier.isEmpty()){
-			return "Failure";
-		}
-		else{
-			currentNode = frontier.poll();
-			explored.add(currentNode);
-			//do the goal test now
-			System.out.println("this is teh current node " +currentNode);
-			System.out.println(graph.get(currentNode).getClass().getName());
-			ArrayList<edge> currentAdjList = (ArrayList<edge>)graph.get(currentNode);
+		do {
+			if (frontier.isEmpty()){
+				return "Failure";
+			}
+			else{
+				currentNode = frontier.poll();
+				explored.add(currentNode);
+				//do the goal test now
+				System.out.println("this is teh current node " +currentNode);
+				System.out.println(graph.get(currentNode).getClass().getName());
+				ArrayList<edge> currentAdjList = (ArrayList<edge>)graph.get(currentNode);
+				
+				ArrayList<String> children = new ArrayList<String>();
+				
+				for (edge adj : currentAdjList){
+					System.out.println(adj.getDest());
+					children.add(adj.getDest());
+				} 
+				//System.out.println("unorderd: "+ children);
+				Collections.sort(children, String.CASE_INSENSITIVE_ORDER);	//ordering the chldren
+				//System.out.println("orderd: "+ children);
+				
+				for (String child : children){
+					if (frontier.contains(child) || !(explored.contains(child))){
+						System.out.println("code comes here");
+						if (goals.contains(child)){
+							System.out.println("code does not come here");
+							System.out.println("!!!Solution found: " + child);
+							return "!!!Solution found: " + child;
+						}
+					}
+					frontier.add(child);
+				}
+				System.out.println("frontier now: " + frontier);
+			}
 			
-			for (edge adj : currentAdjList){
-				System.out.println(adj.getDest());
-			} 
-			return "Working on this";
-		}
-		
-		
-		/*System.out.println(goals.contains("A"));
-		System.out.println(goals.contains("B"));
-        myQ.add(1);
-        myQ.add(6);
-        myQ.add(3);
-        System.out.println(myQ); //1 6 3
-        int first=myQ.poll();// retrieve and remove the first element
-        System.out.println(first);//1
-        System.out.println(myQ);//6 3
-        */
-		
+		}while(!frontier.isEmpty());
+		return "Working on this";
+			
+			
+			/*System.out.println(goals.contains("A"));
+			System.out.println(goals.contains("B"));
+	        myQ.add(1);
+	        myQ.add(6);
+	        myQ.add(3);
+	        System.out.println(myQ); //1 6 3
+	        int first=myQ.poll();// retrieve and remove the first element
+	        System.out.println(first);//1
+	        System.out.println(myQ);//6 3
+	        */
+			
 		
 		
 		
