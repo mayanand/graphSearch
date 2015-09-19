@@ -41,9 +41,11 @@ public class UCS {
 		String currentNode = start;
 		
 		Node currentObj = new Node(currentNode, 0);
+		HashMap<String, Integer> frontierValues = new HashMap<String, Integer>();
 		
 		PriorityQueue<Node> frontier = new PriorityQueue<Node>(10);
 		frontier.add(currentObj);
+		frontierValues.put(currentNode, 0);
 		
 		System.out.println(frontier);
 		
@@ -59,6 +61,7 @@ public class UCS {
 			
 			currentObj = frontier.poll();
 			currentNode = currentObj.getNodeName();
+			frontierValues.remove(currentNode);		//remove the values from frontier once they are popped
 			
 			//check if the popped item satisfies the goal
 			if (goals.contains(currentNode)){
@@ -76,7 +79,14 @@ public class UCS {
 			// listing out all the children of current node
 			for (edge adj : currentAdjList){
 				System.out.println("!!!!children of current node: "+adj.getDest());
+				
+				//Need to check if the node is already in the frontier or explored
+				//if it is in explored then dont add feed this node to frontier
+				//if it is in frontier then check if the distance is lower, in that case delete the older node and ad the new one.
+				//if it is in neither the just add this node to priority queue
 				frontier.add(new Node(adj.getDest(), adj.getCost()));
+				frontierValues.put(adj.getDest(), adj.getCost());
+
 				System.out.println("Priority queue minimum now: "+ frontier.peek().getNodeName() + frontier.peek().getSrcDistance());
 			}
 			
