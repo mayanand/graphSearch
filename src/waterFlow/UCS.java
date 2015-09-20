@@ -2,6 +2,7 @@ package waterFlow;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.PriorityQueue;
 
 public class UCS {
@@ -42,6 +43,7 @@ public class UCS {
 		
 		Node currentObj = new Node(currentNode, 0);
 		HashMap<String, Integer> frontierValues = new HashMap<String, Integer>();
+		int currentNodeSrcCost;
 		
 		PriorityQueue<Node> frontier = new PriorityQueue<Node>(10);
 		frontier.add(currentObj);
@@ -49,11 +51,6 @@ public class UCS {
 		
 		System.out.println(frontier);
 		
-		
-		
-		/*if (goals.contains(currentNode)){
-			return "Success with path";
-		}*/
 		do {
 			if (frontier.isEmpty()){
 				return "Failure";
@@ -61,6 +58,7 @@ public class UCS {
 			
 			currentObj = frontier.poll();
 			currentNode = currentObj.getNodeName();
+			currentNodeSrcCost = currentObj.getSrcDistance();
 			frontierValues.remove(currentNode);		//remove the values from frontier once they are popped
 			
 			//check if the popped item satisfies the goal
@@ -79,15 +77,42 @@ public class UCS {
 			// listing out all the children of current node
 			for (edge adj : currentAdjList){
 				System.out.println("!!!!children of current node: "+adj.getDest());
-				
-				//Need to check if the node is already in the frontier or explored
-				//if it is in explored then dont add feed this node to frontier
-				//if it is in frontier then check if the distance is lower, in that case delete the older node and ad the new one.
 				//if it is in neither the just add this node to priority queue
-				frontier.add(new Node(adj.getDest(), adj.getCost()));
-				frontierValues.put(adj.getDest(), adj.getCost());
-
-				System.out.println("Priority queue minimum now: "+ frontier.peek().getNodeName() + frontier.peek().getSrcDistance());
+				
+				//Need to check if the node is already in explored
+				if (explored.contains(adj.getDest())){
+					//if it is in explored then dont add feed this node to frontier
+					System.out.println("This node has already been explored");
+				}
+				//Need to check if the node is already in the frontier
+				else if (frontierValues.get(adj.getDest()) != null){
+					 int existingCost = frontierValues.get(adj.getDest());
+					 int newCost = currentNodeSrcCost + adj.getCost();	//combined cost of parent and child node
+					//check if the distance is lower, in that case delete the older node and add the new one.
+					 if (existingCost > newCost){
+						 //remove the existing node object from priority list and add the new one
+						 Iterator<Node> iter = frontier.iterator();
+						 while (iter.hasNext()) {
+						     Node current = iter.next();
+						     /*System.out.println("!!!!!!!!!!!!!!!!!!1");
+						     System.out.println(current.getNodeName());*/
+						     if (current.getNodeName() == adj.getDest()){
+						    	 System.out.println("Node name: "+ current.getNodeName()+ adj.getDest());
+						    	 System.out.println(current.getSrcDistance());
+						    	 System.out.println(adj.getCost());
+							     frontier.remove(current);
+							     frontierValues.replace(adj.getDest(), adj.getCost());
+								 frontier.add(new Node(adj.getDest(), adj.getCost()));
+								 break;
+						     }
+						 }						 
+					 }
+				}
+				else{
+					frontier.add(new Node(adj.getDest(), adj.getCost()));
+					frontierValues.put(adj.getDest(), adj.getCost());	
+					System.out.println("Priority queue minimum now: "+ frontier.peek().getNodeName() + frontier.peek().getSrcDistance());
+				}
 			}
 			
 		}while(!frontier.isEmpty());

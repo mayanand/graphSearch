@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class BFS {
-
+	//finding the cost logic is pending
 	public static void main(String[] args) {
 		HashMap<String, ArrayList<edge>> adjLists_dict = new HashMap<String, ArrayList<edge>>();
 
@@ -85,7 +85,7 @@ public class BFS {
 				
 				for (String child : children){
 					//need to check the following if condition
-					if (frontier.contains(child) || !(explored.contains(child))){
+					if (!frontier.contains(child) || !(explored.contains(child))){
 						if (goals.contains(child)){
 							System.out.println("!!!Solution found: " + child);
 							return "!!!Solution found: " + child;

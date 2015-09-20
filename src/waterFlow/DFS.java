@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Stack;
 
 public class DFS {
-
+	//finding the cost logic is pending
 	public static void main(String[] args) {
 		HashMap<String, ArrayList<edge>> adjLists_dict = new HashMap<String, ArrayList<edge>>();
 
@@ -86,6 +86,12 @@ public class DFS {
 				System.out.println("revere orderd: "+ children);
 				
 				for (String child : children){
+					if (!frontier.contains(child) || !(explored.contains(child))){
+						if (goals.contains(child)){
+							System.out.println("!!!Solution found: " + child);
+							return "!!!Solution found: " + child;
+						}
+					}
 					frontier.add(child);
 				}
 				System.out.println("frontier now: " + frontier);
