@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 public class BFS {
 	//finding the cost logic is pending
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		HashMap<String, ArrayList<edge>> adjLists_dict = new HashMap<String, ArrayList<edge>>();
 
 		//Create an arraylist of all nodes
@@ -46,9 +47,10 @@ public class BFS {
 		breadthFirstSearch(start, startTime, adjLists_dict, goals);
 
 
-	}
+	}*/
 	
-	static String breadthFirstSearch(String start, int startTime, HashMap graph, ArrayList<String> goals){
+	
+	String breadthFirstSearch(String start, int startTime, HashMap<String, ArrayList<edge>> graph, List<String> goals){
 		
 		ArrayList<String> explored = new ArrayList<String>();
 		//System.out.println("starttime: "+startTime);
