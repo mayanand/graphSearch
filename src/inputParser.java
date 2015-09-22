@@ -1,12 +1,7 @@
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -20,27 +15,23 @@ public class inputParser {
 		this.filePath = filePath;
 	}
 
-	public HashMap parse(String file) {
+	public List parse(String file) {
 
 
 		BufferedReader br = null;
-		HashMap<String, ArrayList<edge>> adjLists_dict = new HashMap<String, ArrayList<edge>>();
+		List<List<String>> testCasesList = new ArrayList<List<String>>();
+		//HashMap<String, ArrayList<edge>> adjLists_dict = new HashMap<String, ArrayList<edge>>();
 
 
 		try {
 			String sCurrentLine;
-			String currentDir = System.getProperty("user.dir");
-			String fileName = currentDir + "/" + filePath;
-			System.out.println(fileName);
+			String fileName = filePath;
 
 			br = new BufferedReader(new FileReader(fileName));
-			int testCaseNum = 1;
-			String testCaseIndex;
-			
-			List<List<String>> testCasesList = new ArrayList<List<String>>();
+
 			ArrayList<String> tCase = new ArrayList<String>();			
 			Boolean newCase = true;
-			
+
 			while ((sCurrentLine = br.readLine()) != null) {
 				//System.out.println(sCurrentLine);
 				if (totalTestCases == 0){
@@ -48,18 +39,18 @@ public class inputParser {
 				}
 				else if (sCurrentLine.trim().isEmpty()){
 					//clear the arraylist for new test case here
-					
+
 					testCasesList.add(tCase);
 					newCase = true;
 					tCase = new ArrayList<String>();
-					testCaseNum = testCaseNum + 1;
-					
+
 				}
 				else{
+					//add the test cases to arraylist here
 					newCase = false;
 					tCase.add(sCurrentLine);
 				}
-				
+
 			}
 			//adding the last test case to outer arraylist
 			testCasesList.add(tCase);
@@ -74,8 +65,15 @@ public class inputParser {
 				ex.printStackTrace();
 			}
 		}
+		return testCasesList;
 
-		/*Writer writer = null;
+	}	
+
+
+}
+
+
+/*Writer writer = null;
 
 		try {
 			writer = new BufferedWriter(new OutputStreamWriter(
@@ -89,10 +87,4 @@ public class inputParser {
 		} finally {
 			try {writer.close();} catch (Exception ex) {ignore}
 		}
-*/
-		return adjLists_dict;
-
-	}	
-
-
-}
+ */

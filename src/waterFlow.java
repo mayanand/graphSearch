@@ -1,9 +1,5 @@
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 
 
@@ -16,7 +12,9 @@ public class waterFlow {
 		
 		inputParser input_obj = new inputParser(args[1]);
 		
-		HashMap<String, ArrayList<edge>> adjLists_dict = input_obj.parse(args[1]);
+		List testCases = input_obj.parse(args[1]);
+		System.out.println("inside main class");
+		System.out.println(testCases);
 		
 	}
 	
