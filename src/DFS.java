@@ -3,11 +3,12 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Stack;
 
 public class DFS {
 	//finding the cost logic is pending
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		HashMap<String, ArrayList<edge>> adjLists_dict = new HashMap<String, ArrayList<edge>>();
 
 		//Create an arraylist of all nodes
@@ -41,9 +42,9 @@ public class DFS {
 		depthFirstSearch(start, startTime, adjLists_dict, goals);
 
 
-	}
+	}*/
 	
-	static String depthFirstSearch(String start, int startTime, HashMap graph, ArrayList<String> goals){
+	String depthFirstSearch(String start, int startTime, HashMap<String, ArrayList<edge>> graph, List<String> goals){
 		
 		ArrayList<String> explored = new ArrayList<String>();
 		

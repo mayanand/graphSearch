@@ -99,16 +99,23 @@ public class waterFlow {
 			System.out.println(algoType);
 			if (algoType.contains("BFS")){
 				BFS BFS_obj = new BFS();
-				System.out.println("$$$$$$$$$$$$$$$$$");
+				System.out.println("BFS -> -> result");
 				System.out.println(BFS_obj.breadthFirstSearch(startNode, startTime, adjLists_dict, goals));
 			}
-			/*
-			else if (algoType == "DFS"){
+			
+			else if (algoType.contains("DFS")){
+				DFS DFS_obj= new DFS();
+				System.out.println("DFS -> -> result");
+				System.out.println(DFS_obj.depthFirstSearch(startNode, startTime, adjLists_dict, goals));
 
 			}
-			else if (algoType == "UCS"){
+			
+			else if (algoType.contains("UCS")){
+				UCS UCS_obj = new UCS();
+				System.out.println("UCS >>>>>>>>>>>>>>>>>>> result");
+				System.out.println(UCS_obj.unifromCostSearch(startNode, startTime, adjLists_dict, goals));
 
-			}*/
+			}
 			//			System.out.println(temp);
 			//			System.out.println(adjLists_dict);
 		}

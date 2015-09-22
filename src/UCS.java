@@ -3,11 +3,12 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.PriorityQueue;
 
 public class UCS {
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		HashMap<String, ArrayList<edge>> adjLists_dict = new HashMap<String, ArrayList<edge>>();
 
 		//Create an arraylist of all nodes
@@ -37,9 +38,9 @@ public class UCS {
 		unifromCostSearch(start, startTime, adjLists_dict, goals);
 
 
-	}
+	}*/
 	
-	static String unifromCostSearch(String start, int startTime, HashMap graph, ArrayList<String> goals){
+	String unifromCostSearch(String start, int startTime, HashMap<String, ArrayList<edge>> graph, List<String> goals){
 		
 		ArrayList<String> explored = new ArrayList<String>();
 		String currentNode = start;
