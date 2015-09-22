@@ -2,22 +2,21 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 
 
 public class waterFlow {
 	public static void main(String[] args){
 
-		System.out.println("Working Directory = " + System.getProperty("user.dir"));
-		System.out.println("priting arguments" + args[0] + args[1]);
 		System.out.println("Hello World!!");
 
 		inputParser input_obj = new inputParser(args[1]);
 
 		List<List<String>> testCases = input_obj.parse(args[1]);
-		System.out.println("inside main class");
-		//		System.out.println(testCases);
+
 
 		for (List temp : testCases) {
 			String algoType = new String();
@@ -27,13 +26,17 @@ public class waterFlow {
 			String strTime = new String();
 			String startNode = new String();
 			ArrayList<String> nodeList = new ArrayList<String>();
+			Queue<String> nodeCostList = new LinkedList<String>();
+
 			HashMap<String, ArrayList<edge>> adjLists_dict = new HashMap<String, ArrayList<edge>>();
+			HashMap<String, Integer> costBfsDfs = new HashMap<String, Integer>();
 
 			algoType = (String)temp.get(0);
 			//System.out.println("algo type: "+ algoType);
 
 			startNode = (String)temp.get(1);
 			nodeList.add(startNode);
+			nodeCostList.add(startNode);
 
 			midString = (String)temp.get(3);
 			List<String> midNodes = Arrays.asList(midString.split("\\s+"));
@@ -62,9 +65,8 @@ public class waterFlow {
 				adjLists_dict.put(nodes, new ArrayList<edge>());
 			}
 
-			System.out.println("the node list start here");
-
-			System.out.println(nodeList);
+//			System.out.println("the node list start here");
+//			System.out.println(nodeList);
 
 			//M Q 8 1 4-6
 			//O R 3 0
@@ -78,7 +80,7 @@ public class waterFlow {
 
 
 				pipeString = (String)temp.get(i);
-				System.out.println(pipeString);
+				//System.out.println(pipeString);
 				List<String> pipeData = Arrays.asList(pipeString.split("\\s+"));
 				fromNode = pipeData.get(0);
 				toNode = pipeData.get(1);
@@ -92,24 +94,48 @@ public class waterFlow {
 						pipeClosedTime = pipeClosedTime + "," + pipeData.get(j);
 					}
 				}
-				adjLists_dict.get(fromNode).add(new edge(toNode, pipeCost, pipeClosedTime));
+
 				//adjLists_dict.get("AA").add(new edge("BA", 10, "1-2"));
+				adjLists_dict.get(fromNode).add(new edge(toNode, pipeCost, pipeClosedTime));
+
 			}
-			System.out.println("!!!!!!!!!!!!!!!!!!!");
-			System.out.println(algoType);
+
+			Boolean rootCostAssigned = false;
+			String newNode = new String();
+			String targetNode = new String();
+			
+			while (!nodeCostList.isEmpty()){
+				newNode = nodeCostList.poll();
+				if (rootCostAssigned == false){
+					costBfsDfs.put(newNode, 0);
+					rootCostAssigned = true;
+				}
+				
+				for (edge target: adjLists_dict.get(newNode)){
+					targetNode = target.getDest();
+					if (costBfsDfs.get(targetNode) == null){
+						costBfsDfs.put(targetNode, costBfsDfs.get(newNode) + 1 );
+						nodeCostList.add(targetNode);
+					}
+
+				}
+
+			}
+			//System.out.println(costBfsDfs);
+
 			if (algoType.contains("BFS")){
 				BFS BFS_obj = new BFS();
 				System.out.println("BFS -> -> result");
-				System.out.println(BFS_obj.breadthFirstSearch(startNode, startTime, adjLists_dict, goals));
+				System.out.println(BFS_obj.breadthFirstSearch(startNode, startTime, adjLists_dict, goals, costBfsDfs));
 			}
-			
+
 			else if (algoType.contains("DFS")){
 				DFS DFS_obj= new DFS();
 				System.out.println("DFS -> -> result");
-				System.out.println(DFS_obj.depthFirstSearch(startNode, startTime, adjLists_dict, goals));
+				System.out.println(DFS_obj.depthFirstSearch(startNode, startTime, adjLists_dict, goals, costBfsDfs));
 
 			}
-			
+
 			else if (algoType.contains("UCS")){
 				UCS UCS_obj = new UCS();
 				System.out.println("UCS >>>>>>>>>>>>>>>>>>> result");

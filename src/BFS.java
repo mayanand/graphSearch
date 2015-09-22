@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Queue;
 
 public class BFS {
-	//finding the cost logic is pending
 	/*public static void main(String[] args) {
 		HashMap<String, ArrayList<edge>> adjLists_dict = new HashMap<String, ArrayList<edge>>();
 
@@ -50,35 +49,37 @@ public class BFS {
 	}*/
 	
 	
-	String breadthFirstSearch(String start, int startTime, HashMap<String, ArrayList<edge>> graph, List<String> goals){
+	String breadthFirstSearch(String start, int startTime, HashMap<String, ArrayList<edge>> graph, List<String> goals, HashMap<String, Integer> costBfsDfs){
 		
 		ArrayList<String> explored = new ArrayList<String>();
 		//System.out.println("starttime: "+startTime);
 		//System.out.println(graph);
 		Queue<String> frontier=new LinkedList<String>();
+		int finishTime = 0;
 		
 		frontier.add(start);
 		String currentNode = start;
 		
 		if (goals.contains(currentNode)){
-			return "Success with path";
+			finishTime = startTime + costBfsDfs.get(start);
+			return (start + " " + startTime);
 		}
 		do {
 			if (frontier.isEmpty()){
-				return "Failure";
+				return "None";
 			}
 			else{
 				currentNode = frontier.poll();
 				explored.add(currentNode);
 				//do the goal test now
-				System.out.println("this is the current node " +currentNode);
-				System.out.println(graph.get(currentNode).getClass().getName());
+//				System.out.println("this is the current node " +currentNode);
+//				System.out.println(graph.get(currentNode).getClass().getName());
 				ArrayList<edge> currentAdjList = (ArrayList<edge>)graph.get(currentNode);
 				
 				ArrayList<String> children = new ArrayList<String>();
 				
 				for (edge adj : currentAdjList){
-					System.out.println(adj.getDest());
+					//System.out.println(adj.getDest());
 					children.add(adj.getDest());
 				} 
 				//System.out.println("unorderd: "+ children);
@@ -87,19 +88,20 @@ public class BFS {
 				
 				for (String child : children){
 					//need to check the following if condition
-					if (!frontier.contains(child) || !(explored.contains(child))){
+					if (!frontier.contains(child) && !(explored.contains(child))){
 						if (goals.contains(child)){
-							System.out.println("!!!Solution found: " + child);
-							return "!!!Solution found: " + child;
+							//System.out.println("!!!Solution found: " + child);
+							finishTime = startTime + costBfsDfs.get(child);
+							return child + " " + finishTime;
 						}
 					}
 					frontier.add(child);
 				}
-				System.out.println("frontier now: " + frontier);
+				//System.out.println("frontier now: " + frontier);
 			}
 			
 		}while(!frontier.isEmpty());
-		System.out.println("No solution to this problem");
-		return "Solution is none";
+		//System.out.println("No solution to this problem");
+		return "None";
 	}
 }

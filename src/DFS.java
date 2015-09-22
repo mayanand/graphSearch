@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Stack;
 
 public class DFS {
-	//finding the cost logic is pending
 	/*public static void main(String[] args) {
 		HashMap<String, ArrayList<edge>> adjLists_dict = new HashMap<String, ArrayList<edge>>();
 
@@ -44,20 +43,21 @@ public class DFS {
 
 	}*/
 	
-	String depthFirstSearch(String start, int startTime, HashMap<String, ArrayList<edge>> graph, List<String> goals){
+	String depthFirstSearch(String start, int startTime, HashMap<String, ArrayList<edge>> graph, List<String> goals, HashMap<String, Integer> costBfsDfs){
 		
 		ArrayList<String> explored = new ArrayList<String>();
-		
+		int finishTime;
 		Stack<String> frontier = new Stack<String>();
 		frontier.push(start);
 		String currentNode = start;
 		
 		if (goals.contains(currentNode)){
-			return "Success with path";
+			finishTime = startTime + costBfsDfs.get(currentNode);
+			return currentNode + " " + finishTime;
 		}
 		do {
 			if (frontier.isEmpty()){
-				return "Failure";
+				return "None";
 			}
 			else{
 				//adding the last tested node to explored
@@ -68,8 +68,9 @@ public class DFS {
 				
 				//do the goal test now
 				if (goals.contains(currentNode)){
-					System.out.println("!!!Solution found: " + currentNode);
-					return "!!!Solution found: " + currentNode;
+					//System.out.println("!!!Solution found: " + currentNode);
+					finishTime = startTime + costBfsDfs.get(currentNode);
+					return currentNode + " " + finishTime;
 				}
 				//System.out.println("this is the current node " +currentNode);
 
@@ -79,27 +80,28 @@ public class DFS {
 				
 				// listing out all the children of current node
 				for (edge adj : currentAdjList){
-					System.out.println("children of current node: "+adj.getDest());
+					//System.out.println("children of current node: "+adj.getDest());
 					children.add(adj.getDest());
 				} 
-				System.out.println("unorderd: "+ children);
+				//System.out.println("unorderd: "+ children);
 				Collections.sort(children, Collections.reverseOrder());
-				System.out.println("revere orderd: "+ children);
+				//System.out.println("revere orderd: "+ children);
 				
 				for (String child : children){
-					if (!frontier.contains(child) || !(explored.contains(child))){
+					if (!frontier.contains(child) && !(explored.contains(child))){
 						if (goals.contains(child)){
-							System.out.println("!!!Solution found: " + child);
-							return "!!!Solution found: " + child;
+							//System.out.println("!!!Solution found: " + child);
+							finishTime = startTime + costBfsDfs.get(child);
+							return child + " " + finishTime;
 						}
 					}
 					frontier.add(child);
 				}
-				System.out.println("frontier now: " + frontier);
+//				System.out.println("frontier now: " + frontier);
 			}
 			
 		}while(!frontier.isEmpty());
-		System.out.println("No solution to this problem");
-		return "Solution is none";
+		//System.out.println("No solution to this problem");
+		return "None";
 	}
 }
