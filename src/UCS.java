@@ -57,7 +57,7 @@ public class UCS {
 		
 		do {
 			if (frontier.isEmpty()){
-				return "Failure";
+				return "None";
 			}
 			
 			currentObj = frontier.poll();
@@ -68,6 +68,9 @@ public class UCS {
 			//check if the popped item satisfies the goal
 			if (goals.contains(currentNode)){
 				System.out.println("Solution found "+ currentNode);
+				System.out.println("!!!!!!!!!!!!!!!!!1");
+				System.out.println(currentObj.getSrcDistance());
+				System.out.println("start time" + startTime);
 				return ("Solution found: " + currentNode);
 			}
 			
@@ -86,33 +89,28 @@ public class UCS {
 				//Need to check if the node is already in explored
 				if (explored.contains(adj.getDest())){
 					//if it is in explored then dont add feed this node to frontier
-					System.out.println("This node has already been explored");
 				}
 				//Need to check if the node is already in the frontier
 				else if (frontierValues.get(adj.getDest()) != null){
 					 int existingCost = frontierValues.get(adj.getDest());
 					 int newCost = currentNodeSrcCost + adj.getCost();	//combined cost of parent and child node
-					//check if the distance is lower, in that case delete the older node and add the new one.
+
+					 //check if the distance is lower, in that case delete the older node and add the new one.
 					 if (existingCost > newCost){
-						 //remove the existing node object from priority list and add the new one
-						 Iterator<Node> iter = frontier.iterator();
-						 while (iter.hasNext()) {
-						     Node current = iter.next();
-						     /*System.out.println("!!!!!!!!!!!!!!!!!!1");
-						     System.out.println(current.getNodeName());*/
-						     if (current.getNodeName() == adj.getDest()){
-						    	 System.out.println("Node name: "+ current.getNodeName()+ adj.getDest());
-						    	 System.out.println(current.getSrcDistance());
-						    	 System.out.println(adj.getCost());
+						 //remove the existing node object from priority list and add the new one 
+						 for (Node current : frontier) {
+						     if (current.getNodeName().equals(adj.getDest())){
 							     frontier.remove(current);
-							     frontierValues.replace(adj.getDest(), adj.getCost());
-								 frontier.add(new Node(adj.getDest(), adj.getCost()));
+							     frontierValues.replace(adj.getDest(), newCost);
+								 frontier.add(new Node(adj.getDest(), newCost));
 								 break;
 						     }
 						 }						 
 					 }
 				}
 				else{
+//					System.out.println("Adding new nodes to priority queue");
+//					System.out.println(adj.getDest() + adj.getCost());
 					frontier.add(new Node(adj.getDest(), adj.getCost()));
 					frontierValues.put(adj.getDest(), adj.getCost());	
 					System.out.println("Priority queue minimum now: "+ frontier.peek().getNodeName() + frontier.peek().getSrcDistance());
