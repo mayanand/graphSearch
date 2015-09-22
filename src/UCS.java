@@ -31,6 +31,9 @@ public class UCS {
 		ArrayList<String> goals = new ArrayList<String>();
 		goals.add("BA");
 		
+		
+		System.out.println(adjLists_dict);
+		
 		unifromCostSearch(start, startTime, adjLists_dict, goals);
 
 
