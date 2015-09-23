@@ -1,18 +1,20 @@
+import java.util.List;
+
 
 
 public class edge {
-	private String offPeriods;
+	private List<Integer> pipeClosedList;
 	private int cost;
 	private String dest;
 	
-	public edge(String dest, int cost, String offPeriods){
-		this.offPeriods = offPeriods;
+	public edge(String dest, int cost, List<Integer> pipeClosedList){
+		this.pipeClosedList = pipeClosedList;
 		this.cost = cost;
 		this.dest = dest;
 	}
-	public String getOffPeriods()
+	public List<Integer> getpipeClosedList()
 	{
-	    return offPeriods;
+	    return pipeClosedList;
 	}
 	public int getCost() {
 		return cost;

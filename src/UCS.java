@@ -53,7 +53,7 @@ public class UCS {
 		frontier.add(currentObj);
 		frontierValues.put(currentNode, 0);
 		
-		System.out.println(frontier);
+		//System.out.println(frontier);
 		
 		do {
 			if (frontier.isEmpty()){
@@ -79,13 +79,9 @@ public class UCS {
 					
 			//we look to expand the current node now
 			ArrayList<edge> currentAdjList = (ArrayList<edge>)graph.get(currentNode);				
-			ArrayList<String> children = new ArrayList<String>();
 			
 			// listing out all the children of current node
 			for (edge adj : currentAdjList){
-				System.out.println("!!!!children of current node: "+adj.getDest());
-				//if it is in neither the just add this node to priority queue
-				
 				//Need to check if the node is already in explored
 				if (explored.contains(adj.getDest())){
 					//if it is in explored then dont add feed this node to frontier
@@ -97,28 +93,30 @@ public class UCS {
 
 					 //check if the distance is lower, in that case delete the older node and add the new one.
 					 if (existingCost > newCost){
-						 //remove the existing node object from priority list and add the new one 
+						 //remove the existing node object from priority list and add the new one
+						 // do this only if the pipe is functional
 						 for (Node current : frontier) {
 						     if (current.getNodeName().equals(adj.getDest())){
 							     frontier.remove(current);
+							     frontier.add(new Node(adj.getDest(), newCost));
 							     frontierValues.replace(adj.getDest(), newCost);
-								 frontier.add(new Node(adj.getDest(), newCost));
 								 break;
 						     }
 						 }						 
 					 }
 				}
+				//adding a new node to priority queue
 				else{
-//					System.out.println("Adding new nodes to priority queue");
-//					System.out.println(adj.getDest() + adj.getCost());
+					//add this node to the frontier only if the pipe is functional
+					//so include and if statement to check that
 					frontier.add(new Node(adj.getDest(), adj.getCost()));
 					frontierValues.put(adj.getDest(), adj.getCost());	
-					System.out.println("Priority queue minimum now: "+ frontier.peek().getNodeName() + frontier.peek().getSrcDistance());
+					//System.out.println("Priority queue minimum now: "+ frontier.peek().getNodeName() + frontier.peek().getSrcDistance());
 				}
 			}
 			
 		}while(!frontier.isEmpty());
-		System.out.println("No solution to this problem");
-		return "Solution is none";
+		//System.out.println("No solution to this problem");
+		return "None";
 	}
 }

@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 
 
@@ -30,6 +32,7 @@ public class waterFlow {
 
 			HashMap<String, ArrayList<edge>> adjLists_dict = new HashMap<String, ArrayList<edge>>();
 			HashMap<String, Integer> costBfsDfs = new HashMap<String, Integer>();
+			List<Integer> pipeClosedList = new ArrayList<Integer>();
 
 			algoType = (String)temp.get(0);
 			//System.out.println("algo type: "+ algoType);
@@ -77,6 +80,7 @@ public class waterFlow {
 				String fromNode = new String();
 				String toNode = new String();
 				String pipeClosedTime= new String();
+				pipeClosedList = new ArrayList<Integer>();
 
 
 				pipeString = (String)temp.get(i);
@@ -91,12 +95,21 @@ public class waterFlow {
 				}
 				else{
 					for (int j=4; j< pipeData.size() ; j++){
-						pipeClosedTime = pipeClosedTime + "," + pipeData.get(j);
+						
+						pipeClosedTime = pipeData.get(j);
+						List<String> timeRange = Arrays.asList(pipeClosedTime.split("-"));
+						int start = Integer.parseInt(timeRange.get(0));
+						int end = Integer.parseInt(timeRange.get(1));
+						List<Integer> range = IntStream.rangeClosed(start, end).boxed().collect(Collectors.toList());
+						pipeClosedList.addAll(range);
+//						System.out.println("#########"+pipeClosedTime);
+//						pipeClosedTime = pipeClosedTime + "," + pipeData.get(j);
 					}
 				}
 
 				//adjLists_dict.get("AA").add(new edge("BA", 10, "1-2"));
-				adjLists_dict.get(fromNode).add(new edge(toNode, pipeCost, pipeClosedTime));
+				System.out.println("pipe closed list --> " + pipeClosedList);
+				adjLists_dict.get(fromNode).add(new edge(toNode, pipeCost, pipeClosedList));
 
 			}
 
