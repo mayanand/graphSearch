@@ -104,7 +104,7 @@ public class UCS {
 						for (Node current : frontier) {
 							if (current.getNodeName().equals(adj.getDest())){
 								//checking if the pipe is open right now
-								if (!(adj.getpipeClosedList().contains(currentTime))){
+								if (!(adj.getpipeClosedList().contains(currentTime%24))){
 									frontier.remove(current);
 									//System.out.println("adding destination " + adj.getDest() + "path cost " + newCost);
 									frontier.add(new Node(adj.getDest(), newCost));
@@ -120,14 +120,15 @@ public class UCS {
 					//add this node to the frontier only if the pipe is functional
 					//so include and if statement to check that
 					
-					int currentTime = startTime + currentNodeSrcCost + adj.getCost();
-					
+					int currentTime = startTime + currentNodeSrcCost;
+		
 					/*System.out.println("children of the node "+ adj.getDest() + " parent is" + currentNode);
 					System.out.println("current time " + currentTime);
+					System.out.println("mod of current time " + currentTime % 24);
 					System.out.println("start time: "+startTime + " cost of travel upto parent " + adj.getCost());
-					System.out.println("pipe closed list " + adj.getpipeClosedList());
-		*/			
-					if (!(adj.getpipeClosedList().contains(currentTime))){
+					System.out.println("pipe closed list " + adj.getpipeClosedList());*/
+					
+					if (!(adj.getpipeClosedList().contains(currentTime%24))){
 						//adding the total path cost of new node to root
 						//System.out.println("entering " + adj.getDest() + " with cost " + adj.getCost());
 						frontier.add(new Node(adj.getDest(), currentNodeSrcCost + adj.getCost()));
