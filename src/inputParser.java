@@ -73,18 +73,3 @@ public class inputParser {
 }
 
 
-/*Writer writer = null;
-
-		try {
-			writer = new BufferedWriter(new OutputStreamWriter(
-					new FileOutputStream("output.txt"), "utf-8"));
-			writer.write("B 4\n");
-			writer.write("Q 8\n");
-			writer.write("BA 6");
-		} catch (IOException ex) {
-			// report
-			System.out.println("got to report somemthing it seems");
-		} finally {
-			try {writer.close();} catch (Exception ex) {ignore}
-		}
- */

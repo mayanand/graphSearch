@@ -1,4 +1,9 @@
 
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,6 +23,7 @@ public class waterFlow {
 		inputParser input_obj = new inputParser(args[1]);
 
 		List<List<String>> testCases = input_obj.parse(args[1]);
+		List<String> outputList = new ArrayList<String>();
 
 
 		for (List temp : testCases) {
@@ -27,6 +33,7 @@ public class waterFlow {
 			String pipes = new String();
 			String strTime = new String();
 			String startNode = new String();
+			String output = new String();
 			ArrayList<String> nodeList = new ArrayList<String>();
 			Queue<String> nodeCostList = new LinkedList<String>();
 
@@ -68,8 +75,8 @@ public class waterFlow {
 				adjLists_dict.put(nodes, new ArrayList<edge>());
 			}
 
-//			System.out.println("the node list start here");
-//			System.out.println(nodeList);
+			//			System.out.println("the node list start here");
+			//			System.out.println(nodeList);
 
 			//M Q 8 1 4-6
 			//O R 3 0
@@ -95,20 +102,20 @@ public class waterFlow {
 				}
 				else{
 					for (int j=4; j< pipeData.size() ; j++){
-						
+
 						pipeClosedTime = pipeData.get(j);
 						List<String> timeRange = Arrays.asList(pipeClosedTime.split("-"));
 						int start = Integer.parseInt(timeRange.get(0));
 						int end = Integer.parseInt(timeRange.get(1));
 						List<Integer> range = IntStream.rangeClosed(start, end).boxed().collect(Collectors.toList());
 						pipeClosedList.addAll(range);
-//						System.out.println("#########"+pipeClosedTime);
-//						pipeClosedTime = pipeClosedTime + "," + pipeData.get(j);
+						//						System.out.println("#########"+pipeClosedTime);
+						//						pipeClosedTime = pipeClosedTime + "," + pipeData.get(j);
 					}
 				}
 
 				//adjLists_dict.get("AA").add(new edge("BA", 10, "1-2"));
-				System.out.println("pipe closed list --> " + pipeClosedList);
+				//System.out.println("pipe closed list --> " + pipeClosedList);
 				adjLists_dict.get(fromNode).add(new edge(toNode, pipeCost, pipeClosedList));
 
 			}
@@ -116,14 +123,14 @@ public class waterFlow {
 			Boolean rootCostAssigned = false;
 			String newNode = new String();
 			String targetNode = new String();
-			
+
 			while (!nodeCostList.isEmpty()){
 				newNode = nodeCostList.poll();
 				if (rootCostAssigned == false){
 					costBfsDfs.put(newNode, 0);
 					rootCostAssigned = true;
 				}
-				
+
 				for (edge target: adjLists_dict.get(newNode)){
 					targetNode = target.getDest();
 					if (costBfsDfs.get(targetNode) == null){
@@ -139,25 +146,64 @@ public class waterFlow {
 			if (algoType.contains("BFS")){
 				BFS BFS_obj = new BFS();
 				System.out.println("BFS -> -> result");
-				System.out.println(BFS_obj.breadthFirstSearch(startNode, startTime, adjLists_dict, goals, costBfsDfs));
+				output = BFS_obj.breadthFirstSearch(startNode, startTime, adjLists_dict, goals, costBfsDfs);
+				System.out.println(output);
 			}
 
 			else if (algoType.contains("DFS")){
 				DFS DFS_obj= new DFS();
 				System.out.println("DFS -> -> result");
-				System.out.println(DFS_obj.depthFirstSearch(startNode, startTime, adjLists_dict, goals, costBfsDfs));
+				output = DFS_obj.depthFirstSearch(startNode, startTime, adjLists_dict, goals, costBfsDfs);
+				System.out.println(output);
 
 			}
 
 			else if (algoType.contains("UCS")){
 				UCS UCS_obj = new UCS();
 				System.out.println("UCS >>>>>>>>>>>>>>>>>>> result");
-				System.out.println(UCS_obj.unifromCostSearch(startNode, startTime, adjLists_dict, goals));
+				output = UCS_obj.unifromCostSearch(startNode, startTime, adjLists_dict, goals);
+				System.out.println(output);
 
 			}
-			//			System.out.println(temp);
-			//			System.out.println(adjLists_dict);
+
+			//need to collate the output here.
+			outputList.add(output);
+
 		}
+
+		System.out.println(outputList);
+		outputDump(outputList);
+
+
+	}
+
+	static void outputDump(List<String> outputList){
+
+		Writer writer = null;
+
+		try {
+			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("output.txt"), "utf-8"));
+			for (String output : outputList){
+				System.out.println(output);
+				writer.write(output + "\n");
+			}
+			//			writer.write("B 4\n");
+			//			writer.write("Q 8\n");
+			//			writer.write("BA 6");
+		} catch (IOException ex) {
+			// report
+			System.out.println("IO Exception found!!");
+		} finally {
+			try {
+				writer.close();
+			} 
+			catch (Exception ex) {
+				System.out.println("May be I need to do something");
+			}
+		}
+
+
+
 
 
 	}
