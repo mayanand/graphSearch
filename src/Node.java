@@ -11,8 +11,12 @@ public class Node implements Comparable<Node> {
 
 	@Override
 	public int compareTo(Node otherNode)
-	{
-		return Integer.compare(srcDistance, otherNode.srcDistance);
+	{	
+		int compare = Integer.compare(srcDistance, otherNode.srcDistance);
+		if (compare == 0){
+			compare = nodeName.compareTo(otherNode.nodeName);
+		}
+		return compare;
 	}
 
 	public String getNodeName() {

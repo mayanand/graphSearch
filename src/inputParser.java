@@ -17,9 +17,12 @@ public class inputParser {
 
 	public List parse(String file) {
 
-
 		BufferedReader br = null;
 		List<List<String>> testCasesList = new ArrayList<List<String>>();
+		List<String> algoTypes = new ArrayList<String>();
+		algoTypes.add("UCS");
+		algoTypes.add("BFS");
+		algoTypes.add("DFS");
 		//HashMap<String, ArrayList<edge>> adjLists_dict = new HashMap<String, ArrayList<edge>>();
 
 
@@ -29,26 +32,29 @@ public class inputParser {
 
 			br = new BufferedReader(new FileReader(fileName));
 
-			ArrayList<String> tCase = new ArrayList<String>();			
-			Boolean newCase = true;
+			ArrayList<String> tCase = null;	
+			Boolean newCase = false;
 
 			while ((sCurrentLine = br.readLine()) != null) {
 				//System.out.println(sCurrentLine);
 				if (totalTestCases == 0){
 					totalTestCases = Integer.parseInt(sCurrentLine);
 				}
-				else if (sCurrentLine.trim().isEmpty()){
+				else if (algoTypes.contains(sCurrentLine.trim())){
 					//clear the arraylist for new test case here
-
-					testCasesList.add(tCase);
-					newCase = true;
+					if (tCase != null){
+						if (tCase.get(tCase.size() - 1).isEmpty()){
+							tCase.remove(tCase.size() - 1);
+						testCasesList.add(tCase);
+						}
+					}
 					tCase = new ArrayList<String>();
-
+					tCase.add(sCurrentLine);
 				}
 				else{
 					//add the test cases to arraylist here
 					newCase = false;
-					tCase.add(sCurrentLine);
+					tCase.add(sCurrentLine.trim());
 				}
 
 			}
@@ -65,6 +71,8 @@ public class inputParser {
 				ex.printStackTrace();
 			}
 		}
+		
+//		System.out.println(testCasesList);
 		return testCasesList;
 
 	}	
