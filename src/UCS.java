@@ -111,8 +111,9 @@ public class UCS {
 					//so include and if statement to check that
 					int currentTime = startTime + adj.getCost();
 					if (!(adj.getpipeClosedList().contains(currentTime))){
-						frontier.add(new Node(adj.getDest(), adj.getCost()));
-						frontierValues.put(adj.getDest(), adj.getCost());	
+						//adding the total path cost of new node to root
+						frontier.add(new Node(adj.getDest(), currentNodeSrcCost + adj.getCost()));
+						frontierValues.put(adj.getDest(), currentNodeSrcCost + adj.getCost());	
 						//System.out.println("Priority queue minimum now: "+ frontier.peek().getNodeName() + frontier.peek().getSrcDistance());
 					}
 				}
