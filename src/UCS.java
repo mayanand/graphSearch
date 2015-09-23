@@ -74,10 +74,13 @@ public class UCS {
 			explored.add(currentNode);
 
 			//we look to expand the current node now
-			ArrayList<edge> currentAdjList = (ArrayList<edge>)graph.get(currentNode);				
+			ArrayList<edge> currentAdjList = (ArrayList<edge>)graph.get(currentNode);
+			
+			//System.out.println("nodes being looked at: " + currentNode);
 
 			// listing out all the children of current node
 			for (edge adj : currentAdjList){
+				
 				//Need to check if the node is already in explored
 				if (explored.contains(adj.getDest())){
 					//if it is in explored then dont add feed this node to frontier
@@ -90,6 +93,12 @@ public class UCS {
 
 					//check if the distance is lower, in that case delete the older node and add the new one.
 					if (existingCost > newCost){
+						/*System.out.println("######existing cost and new cost");
+						System.out.println("total cost" + " individual cost");
+						System.out.println(newCost + " " + adj.getCost());
+						System.out.println(existingCost + " " + newCost);
+						System.out.println("parent node: " + currentNode);
+						System.out.println("child node: " + adj.getDest());*/
 						//remove the existing node object from priority list and add the new one
 						// do this only if the pipe is functional
 						for (Node current : frontier) {
@@ -97,6 +106,7 @@ public class UCS {
 								//checking if the pipe is open right now
 								if (!(adj.getpipeClosedList().contains(currentTime))){
 									frontier.remove(current);
+									//System.out.println("adding destination " + adj.getDest() + "path cost " + newCost);
 									frontier.add(new Node(adj.getDest(), newCost));
 									frontierValues.replace(adj.getDest(), newCost);
 									break;
@@ -109,9 +119,15 @@ public class UCS {
 				else{
 					//add this node to the frontier only if the pipe is functional
 					//so include and if statement to check that
-					int currentTime = startTime + adj.getCost();
+					//System.out.println("children of the node "+ adj.getDest() + " parent is" + currentNode);
+					int currentTime = startTime + currentNodeSrcCost + adj.getCost();
+					//System.out.println("current time " + currentTime);
+					//System.out.println("start time: "+startTime + " cost of travel upto parent " + adj.getCost());
+					//System.out.println("pipe closed list " + adj.getpipeClosedList());
+					
 					if (!(adj.getpipeClosedList().contains(currentTime))){
 						//adding the total path cost of new node to root
+						//System.out.println("entering " + adj.getDest() + " with cost " + adj.getCost());
 						frontier.add(new Node(adj.getDest(), currentNodeSrcCost + adj.getCost()));
 						frontierValues.put(adj.getDest(), currentNodeSrcCost + adj.getCost());	
 						//System.out.println("Priority queue minimum now: "+ frontier.peek().getNodeName() + frontier.peek().getSrcDistance());
