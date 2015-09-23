@@ -32,8 +32,7 @@ public class inputParser {
 
 			br = new BufferedReader(new FileReader(fileName));
 
-			ArrayList<String> tCase = null;	
-			Boolean newCase = false;
+			ArrayList<String> tCase = null;
 
 			while ((sCurrentLine = br.readLine()) != null) {
 				//System.out.println(sCurrentLine);
@@ -43,17 +42,13 @@ public class inputParser {
 				else if (algoTypes.contains(sCurrentLine.trim())){
 					//clear the arraylist for new test case here
 					if (tCase != null){
-						if (tCase.get(tCase.size() - 1).isEmpty()){
-							tCase.remove(tCase.size() - 1);
 						testCasesList.add(tCase);
-						}
 					}
 					tCase = new ArrayList<String>();
 					tCase.add(sCurrentLine);
 				}
 				else{
 					//add the test cases to arraylist here
-					newCase = false;
 					tCase.add(sCurrentLine.trim());
 				}
 
@@ -71,7 +66,12 @@ public class inputParser {
 				ex.printStackTrace();
 			}
 		}
-		
+		//taking care of the blank line between after every case
+		for (List<String> tc : testCasesList){
+			if (tc.get(tc.size() - 1).isEmpty()){
+				tc.remove(tc.size() - 1);
+			}
+		}
 //		System.out.println(testCasesList);
 		return testCasesList;
 
